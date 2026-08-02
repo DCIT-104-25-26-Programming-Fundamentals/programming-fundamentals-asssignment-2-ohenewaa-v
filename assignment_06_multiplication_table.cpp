@@ -56,4 +56,83 @@
 
 #include <iostream>
 using namespace std;
+#include <iomanip>
 
+void printSingleTable(int num) {
+    cout << "\nMultiplication Table for " << num << ":" << endl;
+    cout << "-------------------------" << endl;
+    
+    for (int i = 1; i <= 12; i++) {
+        cout << setw(3) << num << "  x  " << setw(2) << i << "  =  " << setw(3) << (num * i) << endl;
+    }
+}
+
+void printMultipleTables(int n) {
+    if (n <= 0) {
+        cout << "Error: N must be a positive integer." << endl;
+        return;
+    }
+    
+    for (int num = 1; num <= n; num++) {
+        printSingleTable(num);
+        
+        if (num < n) {
+            cout << "\n---------------------------" << endl;
+            cout << "---------------------------\n" << endl;
+        }
+    }
+}
+
+int showMenu() {
+    int choice;
+    cout << "\n=== MULTIPLICATION TABLE MENU ===" << endl;
+    cout << "1. Print table for a single number (1-12)" << endl;
+    cout << "2. Print tables from 1 to N" << endl;
+    cout << "3. Exit" << endl;
+    cout << "Enter your choice (1-3): ";
+    cin >> choice;
+    return choice;
+}
+
+int main() {
+    int choice;
+    
+    do {
+        choice = showMenu();
+        
+        switch (choice) {
+            case 1: {  
+                int num;
+                cout << "\nEnter a number: ";
+                cin >> num;
+                
+                if (num < 1 || num > 12) {
+                    cout << "Error: Please enter a number between 1 and 12." << endl;
+                } else {
+                    printSingleTable(num);
+                }
+                break;
+            }
+            
+            case 2: {  
+                int n;
+                cout << "\nEnter N (positive integer): ";
+                cin >> n;
+                printMultipleTables(n);
+                break;
+            }
+            
+            case 3: {  
+                cout << "Goodbye!" << endl;
+                break;
+            }
+            
+            default: {
+                cout << "Invalid choice! Please enter 1-3." << endl;
+            }
+        }
+        
+    } while (choice != 3);
+    
+    return 0;
+}

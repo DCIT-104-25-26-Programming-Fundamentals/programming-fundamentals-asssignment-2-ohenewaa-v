@@ -79,4 +79,118 @@
 #include <vector>
 #include <string>
 using namespace std;
+#include <limits>
+
+
+void showMenu() {
+    cout << "\n============================" << endl;
+    cout << "     TO-DO LIST MENU" << endl;
+    cout << "============================" << endl;
+    cout << "1. Add task" << endl;
+    cout << "2. View tasks" << endl;
+    cout << "3. Delete task" << endl;
+    cout << "4. Quit" << endl;
+    cout << "Enter your choice (1-4): ";
+}
+
+void addTask(vector<string>& tasks) {
+    string task;
+    cout << "Enter task: ";
+    cin.ignore();  
+    getline(cin, task);
+    
+    if (task.empty()) {
+        cout << "Error: Task cannot be empty." << endl;
+        return;
+    }
+    
+    tasks.push_back(task);
+    cout << "Task added: \"" << task << "\"" << endl;
+}
+
+void viewTasks(const vector<string>& tasks) {
+    if (tasks.empty()) {
+        cout << "Your to-do list is empty. Add some tasks!" << endl;
+        return;
+    }
+    
+    cout << "\nYour Tasks:" << endl;
+    cout << "-----------" << endl;
+    for (size_t i = 0; i < tasks.size(); i++) {
+        cout << i + 1 << ". " << tasks[i] << endl;
+    }
+}
+
+void deleteTask(vector<string>& tasks) {
+    if (tasks.empty()) {
+        cout << "Error: Your to-do list is empty. Nothing to delete." << endl;
+        return;
+    }
+    
+    viewTasks(tasks);
+    
+    int taskNumber;
+    cout << "\nEnter task number to delete: ";
+    cin >> taskNumber;
+    
+    if (cin.fail()) {
+        cin.clear();  
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+        cout << "Error: Please enter a valid number." << endl;
+        return;
+    }
+    
+    if (taskNumber < 1 || taskNumber > static_cast<int>(tasks.size())) {
+        cout << "Error: Invalid task number. Please enter a number between 1 and " 
+             << tasks.size() << "." << endl;
+        return;
+    }
+    
+    string removedTask = tasks[taskNumber - 1];
+    tasks.erase(tasks.begin() + (taskNumber - 1));
+    cout << "Task \"" << removedTask << "\" has been removed." << endl;
+}
+
+int main() {
+    vector<string> tasks;  
+    int choice;
+    
+    cout << "Welcome to the To-Do List Application!" << endl;
+    
+    do {
+        showMenu();
+        cin >> choice;
+        
+        if (cin.fail()) {
+            cin.clear();  
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+            cout << "Error: Please enter a number between 1 and 4." << endl;
+            continue;
+        }
+        
+        switch (choice) {
+            case 1:
+                addTask(tasks);
+                break;
+                
+            case 2:
+                viewTasks(tasks);
+                break;
+                
+            case 3:
+                deleteTask(tasks);
+                break;
+                
+            case 4:
+                cout << "Goodbye! Have a productive day!" << endl;
+                break;
+                
+            default:
+                cout << "Error: Invalid choice. Please enter a number between 1 and 4." << endl;
+        }
+        
+    } while (choice != 4);
+    
+    return 0;
+}
 
